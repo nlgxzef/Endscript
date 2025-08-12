@@ -50,5 +50,6 @@
 		unpack_stream,
 		pack_stream,
 		end,
+        infobox
 	}
 }
