@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endscript", "Endscript\Endscript.csproj", "{C5E2A099-71F2-47B6-8411-FA63CEE3DC88}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "Modules\Nikki\Nikki\Nikki.csproj", "{04C464A3-DD5B-4D27-AF42-9F49A2F093DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nikki", "..\Dariuus\Nikki\Nikki.csproj", "{04C464A3-DD5B-4D27-AF42-9F49A2F093DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreExtensions", "Modules\Nikki\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj", "{DAF04FB9-F3B3-4076-B4A0-57927926B730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreExtensions", "..\Nikki\Modules\CoreExtensions\CoreExtensions\CoreExtensions.csproj", "{DAF04FB9-F3B3-4076-B4A0-57927926B730}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
