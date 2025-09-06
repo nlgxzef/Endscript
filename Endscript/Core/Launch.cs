@@ -113,8 +113,15 @@ namespace Endscript.Core
 			settings = settings.Replace(@"\\", @"\");
 
 			using var sw = new StreamWriter(File.Open(filename, FileMode.Create));
-			sw.WriteLine("[VERSN1]");
-			sw.WriteLine();
+
+            var ext = Path.GetExtension(filename).ToLower();
+
+            if (ext != ".endlauncher") // .endlauncher is not required to have versioning
+			{
+                sw.WriteLine("[VERSN1]");
+                sw.WriteLine();
+            }
+                
 			sw.Write(settings);
 			sw.WriteLine();
 		}
@@ -122,14 +129,24 @@ namespace Endscript.Core
 		public static void Deserialize(string filename, out Launch launch)
 		{
 			var settings = File.ReadAllText(filename);
-			if (!settings.StartsWith("[VERSN1]"))
+			var ext = Path.GetExtension(filename).ToLower();
+
+			if (ext != ".endlauncher") // .endlauncher is not required to have versioning
+            {
+                if (!settings.StartsWith("[VERSN1]"))
+                {
+
+                    throw new InvalidVersionException(1);
+
+                }
+
+                settings = settings[8..].Replace(@"\", @"\\");
+            }
+			else
 			{
+                settings = settings.Replace(@"\", @"\\");
+            }
 
-				throw new InvalidVersionException(1);
-
-			}
-
-			settings = settings[8..].Replace(@"\", @"\\");
 			launch = JsonSerializer.Deserialize<Launch>(settings, options);
 		}
 	}

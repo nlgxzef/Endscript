@@ -10,7 +10,7 @@ using Endscript.Interfaces;
 namespace Endscript.Commands
 {
 	/// <summary>
-	/// Command of type 'checkbox [description]' with 'enabled/disabled' options.
+	/// Command of type 'infobox [description]'.
 	/// </summary>
 	public class InfoboxCommand : BaseCommand
 	{

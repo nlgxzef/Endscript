@@ -46,7 +46,14 @@ namespace Endscript.Core
 
 		private List<BaseCommand> RecursiveRead(string filename)
 		{
-			// Always expect Version 2 endscript to be passed
+            // Always expect Version 2 endscript to be passed
+            var ext = Path.GetExtension(filename).ToLower();
+			int ver = 0;
+
+			if (ext == ".endxml") // Assume the file is version 3 and skip first line version check
+                ver = 3;
+            else if (ext == ".endscript") // assume is version 2
+                ver = 2;
 
 			if (!File.Exists(filename))
 			{
@@ -58,20 +65,33 @@ namespace Endscript.Core
 			using (var sr = new StreamReader(filename))
 			{
 
-				var read = sr.ReadLine();
-				if (read == VERSN3)
+				switch (ver)
 				{
+					case 3: // .endxml
+                        this._xml_description = sr.ReadToEnd();
+                        return null;
+					case 2: // .endscript
+                        // No need to do anything, we continue to read below
+                        break;
+					case 0:
+					default:
+                        var read = sr.ReadLine();
+                        if (read == VERSN3)
+                        {
 
-					this._xml_description = sr.ReadToEnd();
-					return null;
+                            this._xml_description = sr.ReadToEnd();
+                            return null;
 
-				}
-				else if (read != VERSN2)
-				{
+                        }
+                        else if (read != VERSN2)
+                        {
 
-					throw new InvalidVersionException(2);
+                            throw new InvalidVersionException(2);
 
-				}
+                        }
+						break;
+                }
+				
 
 			}
 
@@ -80,8 +100,8 @@ namespace Endscript.Core
 			var lines = File.ReadAllLines(filename);
 			var list = new List<BaseCommand>(lines.Length);
 
-			// Start with line 1 b/c line 0 is VERSN line
-			for (int i = 1; i < lines.Length; ++i)
+            // Start with line 1 b/c line 0 is VERSN line (if not .endscript)
+            for (int i = (ver == 2 ? 0 : 1); i < lines.Length; ++i)
 			{
 
 				var line = lines[i];
@@ -192,6 +212,7 @@ namespace Endscript.Core
 				eCommandType.@if => new IfStatementCommand(),
 				eCommandType.import => new ImportCommand(),
 				eCommandType.import_all => new ImportAllCommand(),
+				eCommandType.infobox => new InfoboxCommand(),
 				eCommandType.move_file => new MoveFileCommand(),
 				eCommandType.@new => new NewCommand(),
 				eCommandType.pack_stream => new PackStreamCommand(),
